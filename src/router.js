@@ -2,18 +2,24 @@ import Vue from "vue";
 import Router from "vue-router";
 import Login from "./views/Login";
 import PageNotFound from "./views/PageNotFound";
-// import Todo from "./views/Todo";
+import Home from "./views/Home";
+import SingleMovie from "./views/SingleMovie";
 
 Vue.use(Router);
 
 const router = new Router({
   mode: "history",
   routes: [
-    // {
-    //   path: "/",
-    //   name: "home",
-    //   component: Todo
-    // },
+    {
+      path: "/",
+      name: "home",
+      component: Home
+    },
+    {
+      path: "/movies/:id",
+      component: SingleMovie
+    },
+
     {
       path: "/login",
       name: "login",
