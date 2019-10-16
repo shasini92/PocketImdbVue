@@ -19,7 +19,7 @@ const router = new Router({
     },
     {
       path: "/movies/:id",
-      name: "singleMovie",
+      name: "movie",
       component: SingleMovie
     },
 

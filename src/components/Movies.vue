@@ -39,7 +39,7 @@ export default {
     ...mapActions(["getAllMovies"]),
 
     handleRouting(id) {
-      this.$router.push(`/movies/${id}`);
+      this.$router.push({ name: "movie", params: { id } });
     }
   },
 
