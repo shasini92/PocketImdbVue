@@ -11,9 +11,9 @@ const getters = {
 };
 
 const actions = {
-  async getAllMovies({ commit }) {
+  async getAllMovies({ commit }, searchQuery) {
     try {
-      const allMovies = await movieService.fetchMovies();
+      const allMovies = await movieService.fetchMovies(searchQuery);
       commit("SET_MOVIES", allMovies);
     } catch (error) {
       console.log(error);

@@ -6,11 +6,15 @@ const ENDPOINTS = {
 };
 
 class MovieService {
-  async fetchMovies() {
+  async fetchMovies(searchQuery) {
     try {
       const {
         data: { data: allMovies }
-      } = await apiService.getApiClient().get(ENDPOINTS.MOVIES);
+      } = await apiService.getApiClient().get(ENDPOINTS.MOVIES, {
+        params: {
+          searchTerm: searchQuery
+        }
+      });
       return allMovies;
     } catch (error) {
       console.log(error);

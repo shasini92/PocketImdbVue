@@ -62,7 +62,7 @@
                     class="btn btn-primary btn-round btn-block btn-lg"
                   >Sign up</button>
                 </div>
-                <router-link to="/login" class="register-link">
+                <router-link :to="{name:'login'}" class="register-link">
                   <span class="nav-link-inner--text">Already Registered?</span>
                 </router-link>
               </form>
@@ -167,7 +167,7 @@ export default {
   },
 
   methods: {
-    async onRegister(e) {
+    async onRegister() {
       await authService.register(this.userInfo);
       this.$router.push({ name: "login" });
     }
