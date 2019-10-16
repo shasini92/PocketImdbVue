@@ -1,11 +1,16 @@
 import { apiService } from "./ApiBaseService";
 
+const ENDPOINTS = {
+  MOVIES: "/movies",
+  MOVIE: id => `/movies/${id}`
+};
+
 class MovieService {
   async fetchMovies() {
     try {
       const {
         data: { data: allMovies }
-      } = await apiService.getApiClient().get("/movies");
+      } = await apiService.getApiClient().get(ENDPOINTS.MOVIES);
       return allMovies;
     } catch (error) {
       console.log(error);
@@ -14,7 +19,7 @@ class MovieService {
 
   async fetchSingleMovie(id) {
     try {
-      const { data } = await apiService.getApiClient().get(`/movies/${id}`);
+      const { data } = await apiService.getApiClient().get(ENDPOINTS.MOVIE(id));
       return data;
     } catch (error) {
       console.log(error);
@@ -23,7 +28,7 @@ class MovieService {
 
   async addMovie(newMovie) {
     try {
-      const { data } = await axios.post(`/movies`, newMovie);
+      const { data } = await axios.post(ENDPOINTS.MOVIES, newMovie);
 
       return data;
     } catch (error) {

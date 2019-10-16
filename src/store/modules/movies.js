@@ -14,15 +14,16 @@ const actions = {
   async getAllMovies({ commit }) {
     try {
       const allMovies = await movieService.fetchMovies();
-      commit("setMovies", allMovies);
+      commit("SET_MOVIES", allMovies);
     } catch (error) {
       console.log(error);
     }
   },
+
   async getSingleMovie({ commit }, id) {
     try {
       const movie = await movieService.fetchSingleMovie(id);
-      commit("setSingleMovie", movie);
+      commit("SET_SINGLE_MOVIE", movie);
     } catch (error) {
       console.log(error);
     }
@@ -32,7 +33,7 @@ const actions = {
     try {
       const newMovie = await movieService.addMovie(data);
 
-      commit("newMovie", newMovie);
+      commit("NEW_MOVIE", newMovie);
     } catch (error) {
       console.log(error);
     }
@@ -40,17 +41,15 @@ const actions = {
 };
 
 const mutations = {
-  setMovies: (state, movies) => {
-    state.movies = movies;
-  },
-  setSingleMovie: (state, movie) => {
-    state.movie = movie;
-  },
-  setMovies: (state, movies) => {
+  SET_MOVIES: (state, movies) => {
     state.movies = movies;
   },
 
-  newMovie: (state, movie) => {
+  SET_SINGLE_MOVIE: (state, movie) => {
+    state.movie = movie;
+  },
+
+  NEW_MOVIE: (state, movie) => {
     state.todos.unshift(movie);
   }
 };

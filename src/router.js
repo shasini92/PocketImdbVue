@@ -1,9 +1,11 @@
 import Vue from "vue";
 import Router from "vue-router";
+
 import Login from "./views/Login";
 import PageNotFound from "./views/PageNotFound";
 import Home from "./views/Home";
 import SingleMovie from "./views/SingleMovie";
+import Register from "./views/Register";
 
 Vue.use(Router);
 
@@ -17,6 +19,7 @@ const router = new Router({
     },
     {
       path: "/movies/:id",
+      name: "movie",
       component: SingleMovie
     },
 
@@ -31,8 +34,8 @@ const router = new Router({
     },
     {
       path: "/register",
-      name: "Register",
-      component: () => import("./views/Register.vue")
+      name: "register",
+      component: Register
     }
   ]
 });

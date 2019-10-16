@@ -8,7 +8,6 @@
               <form class="card-body p-lg-5 pt-0" @submit.prevent="onLogin">
                 <h4 class="mb-1">Login</h4>
                 <p class="mt-0">To access the best Todos app ever.</p>
-
                 <div class="form-group mt-3">
                   <div class="input-group input-group-alternative">
                     <input
@@ -16,7 +15,6 @@
                       placeholder="Your Email address"
                       name="email"
                       type="email"
-                      @keyup="validate"
                       v-model="userInfo.email"
                     />
                   </div>
@@ -28,7 +26,6 @@
                       placeholder="Your Password"
                       name="password"
                       type="password"
-                      @keyup="validate"
                       v-model="userInfo.password"
                     />
                   </div>
@@ -59,24 +56,29 @@ import { mapActions } from "vuex";
 
 export default {
   name: "Login",
+
   data: function() {
     return {
       userInfo: {
         email: "",
         password: ""
-      },
-      isDisabled: true
+      }
     };
   },
+
+  computed: {
+    isDisabled: function() {
+      if (this.userInfo.email && this.userInfo.password) {
+        return false;
+      } else {
+        return true;
+      }
+    }
+  },
+
   methods: {
     ...mapActions(["login"]),
-    validate() {
-      if (this.userInfo.email && this.userInfo.password) {
-        this.isDisabled = false;
-      } else {
-        this.isDisabled = true;
-      }
-    },
+
     async onLogin() {
       let credentials = {
         email: this.userInfo.email,

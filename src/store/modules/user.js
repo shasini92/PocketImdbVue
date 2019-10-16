@@ -12,23 +12,16 @@ const actions = {
   async login({ commit }, credentials) {
     try {
       const data = await authService.login(credentials);
-      commit("setUser", data);
+      commit("SET_USER", data);
     } catch (error) {
       console.log(error);
     }
   },
+
   async logout({ commit }) {
     try {
       await authService.logout();
-      commit("logoutUser");
-    } catch (error) {
-      console.log(error);
-    }
-  },
-  async register({ commit }, newUser) {
-    try {
-      const createdUser = await authService.register(newUser);
-      commit("register", createdUser);
+      commit("LOGOUT_USER");
     } catch (error) {
       console.log(error);
     }
@@ -44,17 +37,18 @@ const localStorageLogout = () => {
 };
 
 const mutations = {
-  setUser: (state, data) => {
+  SET_USER: (state, data) => {
     localStorageLogin(data);
     state.userLoggedIn = true;
   },
-  logoutUser: state => {
+
+  LOGOUT_USER: state => {
     localStorageLogout();
     state.userLoggedIn = false;
   },
-  register: (state, data) => {
-    localStorageLogin(data);
-    state.userLoggedIn = true;
+
+  SET_USER_LOGGED_IN: (state, data) => {
+    state.userLoggedIn = data;
   }
 };
 
