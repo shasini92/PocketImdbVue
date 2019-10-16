@@ -9,6 +9,7 @@ class ApiBaseService {
     });
     this.setInterceptor();
   }
+
   setInterceptor = () => {
     this.client.interceptors.request.use(config => {
       const token = JSON.parse(window.localStorage.getItem("access_token"));

@@ -30,15 +30,19 @@ import { mapGetters, mapActions } from "vuex";
 
 export default {
   name: "Movies",
+
   computed: {
     ...mapGetters(["allMovies"])
   },
+
   methods: {
     ...mapActions(["getAllMovies"]),
+
     handleRouting(id) {
       this.$router.push(`/movies/${id}`);
     }
   },
+
   created() {
     this.getAllMovies();
   }

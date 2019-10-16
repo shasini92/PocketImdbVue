@@ -1,11 +1,17 @@
 import { apiService } from "./ApiBaseService";
 
+const ENDPOINTS = {
+  LOGIN: "/login",
+  LOGOUT: "/logout",
+  REGISTER: "/register"
+};
+
 class AuthService {
   async login(credentials) {
     try {
       const { data } = await apiService
         .getApiClient()
-        .post(`/login`, credentials);
+        .post(ENDPOINTS.LOGIN, credentials);
 
       return data;
     } catch (error) {
@@ -15,7 +21,7 @@ class AuthService {
 
   async logout() {
     try {
-      await apiService.getApiClient().post("/logout", {});
+      await apiService.getApiClient().post(ENDPOINTS.LOGOUT, {});
     } catch (error) {
       console.log(error);
     }
@@ -25,7 +31,7 @@ class AuthService {
     try {
       const { data } = await apiService
         .getApiClient()
-        .post(`/register`, newUserData);
+        .post(ENDPOINTS.REGISTER, newUserData);
       return data;
     } catch (error) {
       console.log(error);

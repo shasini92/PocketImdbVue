@@ -43,14 +43,18 @@ import { mapGetters, mapActions } from "vuex";
 
 export default {
   components: { PopularMovies },
+
   computed: {
     ...mapGetters(["singleMovie"])
   },
+
   methods: {
     ...mapActions(["getSingleMovie"])
   },
+
   created() {
-    this.getSingleMovie(this.$route.params.id);
+    let id = this.$route.params.id;
+    this.getSingleMovie(id);
   }
 };
 </script>
