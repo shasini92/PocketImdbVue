@@ -11,19 +11,32 @@ const getters = {
 };
 
 const actions = {
+  async react({ commit }, reaction) {
+    try {
+      const response = await movieService.react(reaction);
+
+      commit("UPDATE_LIKES_AND_DISLIKES", response.reaction_type);
+    } catch (error) {
+      console.log(error);
+    }
+  },
+
   async getAllMovies({ commit }, searchQuery) {
     try {
       const allMovies = await movieService.fetchMovies(searchQuery);
+
       commit("SET_MOVIES", allMovies);
     } catch (error) {
       console.log(error);
     }
   },
 
-  async getSingleMovie({ commit }, id) {
+  async getSingleMovie({ commit, rootState }, id) {
     try {
-      const movie = await movieService.fetchSingleMovie(id);
-      commit("SET_SINGLE_MOVIE", movie);
+      console.log(rootState);
+      // const movie = await movieService.fetchSingleMovie(id);
+
+      // commit("SET_SINGLE_MOVIE", movie);
     } catch (error) {
       console.log(error);
     }
@@ -47,10 +60,34 @@ const mutations = {
 
   SET_SINGLE_MOVIE: (state, movie) => {
     state.movie = movie;
+    state.movie.dislikes = 0;
+    state.movie.likes = 0;
+    state.movie.disableLike = false;
+    state.movie.disableDislike = false;
+
+    movie.reactions.forEach(reaction => {
+      if (reaction.reaction_type == "disliked") state.movie.dislikes++;
+      if (reaction.reaction_type == "liked") state.movie.likes++;
+    });
   },
 
   NEW_MOVIE: (state, movie) => {
     state.todos.unshift(movie);
+  },
+
+  UPDATE_LIKES_AND_DISLIKES: (state, type) => {
+    if (type == "liked") {
+      const newState = { ...state.movie };
+      newState.likes++;
+      if (newState.dislikes !== 0) newState.dislikes--;
+      state.movie = newState;
+    }
+    if (type == "disliked") {
+      const newState = { ...state.movie };
+      newState.dislikes++;
+      if (newState.likes !== 0) newState.likes--;
+      state.movie = newState;
+    }
   }
 };
 

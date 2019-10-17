@@ -7,9 +7,26 @@
           <br />
           <h4>Genre</h4>
           <br />
-          <p>Likes and Dislikes</p>
+          <button class="btn-outline-success">
+            <span class="badge badge-pill badge-success">{{singleMovie.likes}}</span>
+          </button>
+          <button class="ml-3 btn-outline-danger">
+            <span class="badge badge-pill badge-danger">{{singleMovie.dislikes}}</span>
+          </button>
           <br />
-          <div class="card my-2">
+          <br />
+          <button class="like" @click.prevent="handleReact('liked')" :disabled="disableLike">
+            <i class="fa fa-thumbs-o-up" aria-hidden="true"></i>
+          </button>
+          <button
+            class="dislike ml-4"
+            @click.prevent="handleReact('disliked')"
+            :disabled="disableDislike"
+          >
+            <i class="fa fa-thumbs-o-down" aria-hidden="true"></i>
+          </button>
+          <br />
+          <div class="card mb-2 mt-4">
             <div class="card-horizontal">
               <div class="img-square-wrapper my-auto">
                 <img class :src="singleMovie.image_url" alt="Card image cap" />
@@ -44,17 +61,45 @@ import { mapGetters, mapActions } from "vuex";
 export default {
   components: { PopularMovies },
 
+  data() {
+    return {
+      disableLike: false,
+      disableDislike: false
+    };
+  },
+
   computed: {
     ...mapGetters(["singleMovie"])
   },
 
   methods: {
-    ...mapActions(["getSingleMovie"])
+    ...mapActions(["getSingleMovie", "react"]),
+
+    handleReact(reactionType) {
+      let data = {
+        reactionType,
+        id: this.singleMovie.id
+      };
+      if (reactionType == "liked") {
+        this.disableLike = true;
+        this.disableDislike = false;
+      }
+      if (reactionType == "disliked") {
+        this.disableLike = false;
+        this.disableDislike = true;
+      }
+      this.react(data);
+    }
   },
 
   created() {
     let id = this.$route.params.id;
     this.getSingleMovie(id);
+    console.log(this.singleMovie);
+    console.log(this.singleMovie.reaction_type);
+    if (this.singleMovie.reaction_type == "liked") this.disableLike = true;
+    if (this.singleMovie.reaction_type == "disliked")
+      this.disableDislike = true;
   }
 };
 </script>
@@ -68,5 +113,51 @@ export default {
 img {
   max-height: 100%;
   max-width: 240px;
+}
+
+button.like {
+  width: 30px;
+  height: 30px;
+  margin: 0 auto;
+  border-radius: 50%;
+  color: rgba(0, 150, 136, 1);
+  background-color: rgba(38, 166, 154, 0.3);
+  border-color: rgba(0, 150, 136, 1);
+  border-width: 1px;
+  font-size: 15px;
+}
+
+button.like:hover {
+  width: 35px;
+  height: 35px;
+}
+
+button.dislike {
+  width: 30px;
+  height: 30px;
+  margin: 0 auto;
+  border-radius: 50%;
+  color: rgba(255, 82, 82, 1);
+  background-color: rgba(255, 138, 128, 0.3);
+  border-color: rgba(255, 82, 82, 1);
+  border-width: 1px;
+  font-size: 15px;
+}
+
+button.dislike:hover {
+  width: 35px;
+  height: 35px;
+}
+
+button.learnmore {
+  width: 100%;
+  padding: 10px;
+  border: none;
+  background: rgba(0, 151, 167, 1);
+  border-radius: 5px;
+  text-transform: uppercase;
+  font-size: 16px;
+  color: #fff;
+  letter-spacing: 1px;
 }
 </style>
