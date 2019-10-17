@@ -28,22 +28,14 @@ const actions = {
   }
 };
 
-const localStorageLogin = data => {
-  localStorage.setItem("access_token", JSON.stringify(data.access_token));
-};
-
-const localStorageLogout = () => {
-  localStorage.removeItem("access_token");
-};
-
 const mutations = {
   SET_USER: (state, data) => {
-    localStorageLogin(data);
+    localStorage.setItem("access_token", JSON.stringify(data.access_token));
     state.userLoggedIn = true;
   },
 
   LOGOUT_USER: state => {
-    localStorageLogout();
+    localStorage.removeItem("access_token");
     state.userLoggedIn = false;
   },
 

@@ -37,7 +37,7 @@
                     class="btn btn-primary btn-round btn-block btn-lg"
                   >Login</button>
                 </div>
-                <router-link to="/register" class="register-link float-right mt-2">
+                <router-link :to="{name:'register'}" class="register-link float-right mt-2">
                   <span class="nav-link-inner--text">Not a member?</span>
                 </router-link>
               </form>
@@ -50,8 +50,6 @@
 </template>
 
 <script>
-import VueRouter from "vue-router";
-import axios from "axios";
 import { mapActions } from "vuex";
 
 export default {
@@ -86,7 +84,7 @@ export default {
       };
 
       await this.login(credentials);
-      this.$router.push("/");
+      this.$router.push({ name: "home" });
     }
   }
 };

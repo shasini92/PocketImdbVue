@@ -25,8 +25,8 @@
             type="search"
             placeholder="Search"
             aria-label="Search"
+            v-model="searchTerm"
           />
-          <button class="btn btn-primary btn-outline-light my-2 my-sm-0" type="submit">Search</button>
         </form>
         <li class="nav-item">
           <router-link class="nav-link" :to="{name: 'login'}" v-if="!userLoggedIn">Login</router-link>
@@ -46,15 +46,37 @@
 import axios from "axios";
 import { mapActions, mapGetters, mapMutations } from "vuex";
 
+const debounce = (func, delay) => {
+  let inDebounce;
+  return function() {
+    const context = this;
+    const args = arguments;
+    clearTimeout(inDebounce);
+    inDebounce = setTimeout(() => func.apply(context, args), delay);
+  };
+};
+
 export default {
   name: "Header",
+
+  data() {
+    return {
+      searchTerm: ""
+    };
+  },
 
   computed: {
     ...mapGetters(["userLoggedIn"])
   },
 
+  watch: {
+    searchTerm() {
+      this.getAllMovies(this.searchTerm);
+    }
+  },
+
   methods: {
-    ...mapActions(["logout"]),
+    ...mapActions(["logout", "getAllMovies"]),
 
     onLogout() {
       this.logout();
@@ -65,6 +87,7 @@ export default {
   },
 
   created() {
+    this.getAllMovies = debounce(this.getAllMovies.bind(this), 750);
     if (localStorage.getItem("access_token") === null) {
       this.SET_USER_LOGGED_IN(false);
     } else {
