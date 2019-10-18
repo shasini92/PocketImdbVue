@@ -3,7 +3,8 @@ import { apiService } from "./ApiBaseService";
 const ENDPOINTS = {
   MOVIES: "/movies",
   MOVIE: id => `/movies/${id}`,
-  GENRES: "/genres"
+  GENRES: "/genres",
+  OMDB: title => `http://www.omdbapi.com/?apikey=715ca298&t=${title}`
 };
 
 class MovieService {

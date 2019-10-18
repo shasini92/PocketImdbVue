@@ -51,7 +51,7 @@
 
 <script>
 import { mapActions, mapMutations, mapGetters } from "vuex";
-import axios from "axios";
+import { omdbService } from "../services/OMDbService";
 
 export default {
   name: "CreateMovie",
@@ -87,9 +87,8 @@ export default {
     },
 
     async getFromOMDb() {
-      const { data } = await axios.get(
-        `http://www.omdbapi.com/?apikey=715ca298&t=${this.title}`
-      );
+      const data = await omdbService.fetchFromOMDb(this.title);
+
       this.title = data.Title;
       this.description = data.Plot;
       this.image_url = data.Poster;
