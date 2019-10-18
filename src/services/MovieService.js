@@ -2,7 +2,8 @@ import { apiService } from "./ApiBaseService";
 
 const ENDPOINTS = {
   MOVIES: "/movies",
-  MOVIE: id => `/movies/${id}`
+  MOVIE: id => `/movies/${id}`,
+  REACTIONS: id => `/movies/${id}/reactions`
 };
 
 class MovieService {
@@ -10,7 +11,7 @@ class MovieService {
     try {
       const { data } = await apiService
         .getApiClient()
-        .post(`${ENDPOINTS.MOVIE(reaction.id)}/reactions`, {
+        .post(ENDPOINTS.REACTIONS(reaction.id), {
           reactionType: reaction.reactionType,
           movieId: reaction.id
         });
@@ -41,7 +42,7 @@ class MovieService {
     try {
       const { data } = await apiService.getApiClient().get(ENDPOINTS.MOVIE(id));
 
-      return data[0];
+      return data;
     } catch (error) {
       console.log(error);
     }

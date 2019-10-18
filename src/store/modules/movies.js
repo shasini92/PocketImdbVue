@@ -1,4 +1,8 @@
 import { movieService } from "../../services/MovieService";
+import {
+  MOVIE_REACTION_LIKED,
+  MOVIE_REACTION_DISLIKED
+} from "../../constants/reactions";
 
 const state = {
   movies: [],
@@ -66,16 +70,21 @@ const mutations = {
     state.movie.disableDislike = false;
 
     movie.reactions.forEach(reaction => {
-      if (reaction.reaction_type == "liked" && reaction.user_id == user_id) {
-        console.log("like disabled");
+      if (
+        reaction.reaction_type == MOVIE_REACTION_LIKED &&
+        reaction.user_id == user_id
+      ) {
         state.movie.disableLike = true;
       }
-      if (reaction.reaction_type == "disliked" && reaction.user_id == user_id) {
+      if (
+        reaction.reaction_type == MOVIE_REACTION_DISLIKED &&
+        reaction.user_id == user_id
+      ) {
         state.movie.disableDislike = true;
-        console.log("dislike disabled");
       }
-      if (reaction.reaction_type == "disliked") state.movie.dislikes++;
-      if (reaction.reaction_type == "liked") state.movie.likes++;
+      if (reaction.reaction_type == MOVIE_REACTION_DISLIKED)
+        state.movie.dislikes++;
+      if (reaction.reaction_type == MOVIE_REACTION_LIKED) state.movie.likes++;
     });
   },
 
@@ -84,13 +93,13 @@ const mutations = {
   },
 
   UPDATE_LIKES_AND_DISLIKES: (state, type) => {
-    if (type == "liked") {
+    if (type == MOVIE_REACTION_LIKED) {
       const newState = { ...state.movie };
       newState.likes++;
       if (newState.dislikes !== 0) newState.dislikes--;
       state.movie = newState;
     }
-    if (type == "disliked") {
+    if (type == MOVIE_REACTION_DISLIKED) {
       const newState = { ...state.movie };
       newState.dislikes++;
       if (newState.likes !== 0) newState.likes--;

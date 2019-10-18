@@ -61,13 +61,13 @@
 <script>
 import PopularMovies from "../components/PopularMovies";
 import { mapGetters, mapActions } from "vuex";
+import {
+  MOVIE_REACTION_DISLIKED,
+  MOVIE_REACTION_LIKED
+} from "../constants/reactions";
 
 export default {
   components: { PopularMovies },
-
-  data() {
-    return {};
-  },
 
   computed: {
     ...mapGetters(["singleMovie"])
@@ -82,11 +82,11 @@ export default {
         id: this.singleMovie.id
       };
 
-      if (reactionType == "liked") {
+      if (reactionType == MOVIE_REACTION_LIKED) {
         this.singleMovie.disableLike = true;
         this.singleMovie.disableDislike = false;
       }
-      if (reactionType == "disliked") {
+      if (reactionType == MOVIE_REACTION_DISLIKED) {
         this.singleMovie.disableLike = false;
         this.singleMovie.disableDislike = true;
       }
