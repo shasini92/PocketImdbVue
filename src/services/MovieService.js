@@ -10,10 +10,9 @@ class MovieService {
     try {
       const { data } = await apiService
         .getApiClient()
-        .get(`${ENDPOINTS.MOVIE(reaction.id)}/react`, {
-          params: {
-            reactionType: reaction.reactionType
-          }
+        .post(`${ENDPOINTS.MOVIE(reaction.id)}/reactions`, {
+          reactionType: reaction.reactionType,
+          movieId: reaction.id
         });
 
       return data;
