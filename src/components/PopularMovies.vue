@@ -12,6 +12,7 @@
         <p>Movie 1</p>
         <p>Movie 1</p>
         <p>Movie 1</p>
+        <p>Movie 1</p>
       </div>
     </div>
   </div>

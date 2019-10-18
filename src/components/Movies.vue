@@ -55,7 +55,7 @@ export default {
   flex: 1 1 auto;
 }
 img {
-  max-height: 100%;
+  max-height: 240px;
   max-width: 240px;
 }
 .hoverable:hover {
