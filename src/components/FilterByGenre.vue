@@ -26,15 +26,16 @@
 </template>
 
 <script>
-import { mapMutations, mapActions } from "vuex";
+import { mapMutations, mapActions, mapGetters } from "vuex";
 
 export default {
   name: "FilterByGenre",
 
-  data() {
-    return {
-      showBack: false
-    };
+  computed: {
+    ...mapGetters(["showCreateForm"]),
+    showBack() {
+      return this.showCreateForm;
+    }
   },
 
   methods: {
@@ -42,12 +43,10 @@ export default {
 
     goBack() {
       this.SHOW_CREATE_FORM(false);
-      this.showBack = false;
     },
 
     showCreate() {
       this.SHOW_CREATE_FORM(true);
-      this.showBack = true;
     }
   }
 };

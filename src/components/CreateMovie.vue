@@ -16,7 +16,7 @@
         <div class="form-group mt-3">
           <div class="input-group input-group-alternative">
             <textarea
-              rows="8"
+              rows="7"
               class="form-control"
               v-model="description"
               placeholder="Add a description..."
@@ -42,6 +42,7 @@
             />
           </div>
         </div>
+        <button class="btn btn-success btn-block" @click.prevent="getFromOMDb">Get data from OMDb</button>
         <button
           type="submit"
           class="btn btn-primary btn-block"
@@ -54,6 +55,7 @@
 
 <script>
 import { mapActions, mapMutations } from "vuex";
+import axios from "axios";
 
 export default {
   name: "CreateMovie",
@@ -82,6 +84,15 @@ export default {
 
       this.addMovie(movie);
       this.SHOW_CREATE_FORM(false);
+    },
+
+    async getFromOMDb() {
+      const { data } = await axios.get(
+        `http://www.omdbapi.com/?apikey=715ca298&t=${this.title}`
+      );
+      this.title = data.Title;
+      this.description = data.Plot;
+      this.image_url = data.Poster;
     }
   }
 };
