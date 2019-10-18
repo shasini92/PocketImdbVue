@@ -60,6 +60,16 @@ const actions = {
     }
   },
 
+  async getMoviesByGenre({ commit }, genreId) {
+    try {
+      const allMovies = await movieService.fetchMoviesByGenre(genreId);
+
+      commit("SET_MOVIES", allMovies);
+    } catch (error) {
+      console.log(error);
+    }
+  },
+
   async addMovie({ commit }, data) {
     try {
       const newMovie = await movieService.addMovie(data);

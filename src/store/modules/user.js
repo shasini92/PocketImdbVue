@@ -1,4 +1,5 @@
 import { authService } from "../../services/AuthService";
+import router from "../../router";
 
 const state = {
   userLoggedIn: false,
@@ -42,6 +43,7 @@ const mutations = {
     localStorage.removeItem("access_token");
     state.userLoggedIn = false;
     state.user = {};
+    router.push({ name: "login" });
   },
 
   SET_USER_LOGGED_IN: (state, data) => {

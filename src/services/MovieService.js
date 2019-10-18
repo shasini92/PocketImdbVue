@@ -4,7 +4,8 @@ const ENDPOINTS = {
   MOVIES: "/movies",
   MOVIE: id => `/movies/${id}`,
   GENRES: "/genres",
-  REACTIONS: id => `/movies/${id}/reactions`
+  REACTIONS: id => `/movies/${id}/reactions`,
+  MOVIESBYGENRE: genreId => `/movies?genreId=${genreId}`
 };
 
 class MovieService {
@@ -54,6 +55,18 @@ class MovieService {
       const { data } = await apiService.getApiClient().get(ENDPOINTS.GENRES);
 
       return data;
+    } catch (error) {
+      console.log(error);
+    }
+  }
+
+  async fetchMoviesByGenre(genreId) {
+    try {
+      const {
+        data: { data: allMovies }
+      } = await apiService.getApiClient().get(ENDPOINTS.MOVIESBYGENRE(genreId));
+
+      return allMovies;
     } catch (error) {
       console.log(error);
     }
