@@ -3,13 +3,15 @@ import { movieService } from "../../services/MovieService";
 const state = {
   movies: [],
   movie: {},
-  showCreateForm: false
+  showCreateForm: false,
+  genres: []
 };
 
 const getters = {
   allMovies: state => state.movies,
   singleMovie: state => state.movie,
-  showCreateForm: state => state.showCreateForm
+  showCreateForm: state => state.showCreateForm,
+  genres: state => state.genres
 };
 
 const actions = {
@@ -32,6 +34,16 @@ const actions = {
     }
   },
 
+  async getGenres({ commit }) {
+    try {
+      const genres = await movieService.fetchGenres();
+
+      commit("SET_GENRES", genres);
+    } catch (error) {
+      console.log(error);
+    }
+  },
+
   async addMovie({ commit }, data) {
     try {
       const newMovie = await movieService.addMovie(data);
@@ -46,6 +58,10 @@ const actions = {
 const mutations = {
   SET_MOVIES: (state, movies) => {
     state.movies = movies;
+  },
+
+  SET_GENRES: (state, genres) => {
+    state.genres = genres;
   },
 
   SET_SINGLE_MOVIE: (state, movie) => {

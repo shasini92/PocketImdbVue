@@ -25,11 +25,7 @@
         </div>
         <select class="custom-select custom-select-sm" v-model="genre_id">
           <option selected>Please select a genre:</option>
-          <option value="1">Action</option>
-          <option value="2">Horror</option>
-          <option value="3">Thriller</option>
-          <option value="4">Sci-Fi</option>
-          <option value="5">Horror</option>
+          <option v-for="genre in genres" :value="genre.id" :key="genre.id">{{genre.name}}</option>
         </select>
         <div class="form-group mt-3">
           <div class="input-group input-group-alternative">
@@ -54,7 +50,7 @@
 </template>
 
 <script>
-import { mapActions, mapMutations } from "vuex";
+import { mapActions, mapMutations, mapGetters } from "vuex";
 import axios from "axios";
 
 export default {
@@ -67,6 +63,10 @@ export default {
       genre_id: "Please select a genre:",
       image_url: ""
     };
+  },
+
+  computed: {
+    ...mapGetters(["genres"])
   },
 
   methods: {

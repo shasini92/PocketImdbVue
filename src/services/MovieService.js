@@ -2,7 +2,8 @@ import { apiService } from "./ApiBaseService";
 
 const ENDPOINTS = {
   MOVIES: "/movies",
-  MOVIE: id => `/movies/${id}`
+  MOVIE: id => `/movies/${id}`,
+  GENRES: "/genres"
 };
 
 class MovieService {
@@ -24,6 +25,16 @@ class MovieService {
   async fetchSingleMovie(id) {
     try {
       const { data } = await apiService.getApiClient().get(ENDPOINTS.MOVIE(id));
+      return data;
+    } catch (error) {
+      console.log(error);
+    }
+  }
+
+  async fetchGenres() {
+    try {
+      const { data } = await apiService.getApiClient().get(ENDPOINTS.GENRES);
+
       return data;
     } catch (error) {
       console.log(error);

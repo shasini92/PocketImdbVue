@@ -14,9 +14,7 @@
           <div class="form-inline col-md-3">
             <label for="genre">Filter by genre:</label>
             <select class="form-control ml-3" id="genre" style="width:50%">
-              <option selected>High</option>
-              <option>Medium</option>
-              <option>Low</option>
+              <option v-for="genre in genres" :value="genre.id" :key="genre.id">{{genre.name}}</option>
             </select>
           </div>
         </div>
@@ -32,7 +30,7 @@ export default {
   name: "FilterByGenre",
 
   computed: {
-    ...mapGetters(["showCreateForm"]),
+    ...mapGetters(["showCreateForm", "genres"]),
     showBack() {
       return this.showCreateForm;
     }
@@ -41,6 +39,8 @@ export default {
   methods: {
     ...mapMutations(["SHOW_CREATE_FORM"]),
 
+    ...mapActions(["getGenres"]),
+
     goBack() {
       this.SHOW_CREATE_FORM(false);
     },
@@ -48,6 +48,9 @@ export default {
     showCreate() {
       this.SHOW_CREATE_FORM(true);
     }
+  },
+  created() {
+    this.getGenres();
   }
 };
 </script>
