@@ -50,7 +50,9 @@ class MovieService {
 
   async addMovie(newMovie) {
     try {
-      const { data } = await axios.post(ENDPOINTS.MOVIES, newMovie);
+      const { data } = await apiService
+        .getApiClient()
+        .post(ENDPOINTS.MOVIES, newMovie);
 
       return data;
     } catch (error) {
