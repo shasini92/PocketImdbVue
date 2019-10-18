@@ -4,10 +4,25 @@ const ENDPOINTS = {
   MOVIES: "/movies",
   MOVIE: id => `/movies/${id}`,
   GENRES: "/genres",
-  OMDB: title => `http://www.omdbapi.com/?apikey=715ca298&t=${title}`
+  REACTIONS: id => `/movies/${id}/reactions`
 };
 
 class MovieService {
+  async react(reaction) {
+    try {
+      const { data } = await apiService
+        .getApiClient()
+        .post(ENDPOINTS.REACTIONS(reaction.id), {
+          reactionType: reaction.reactionType,
+          movieId: reaction.id
+        });
+
+      return data;
+    } catch (error) {
+      console.log(error);
+    }
+  }
+
   async fetchMovies(searchQuery) {
     try {
       const {
@@ -17,6 +32,7 @@ class MovieService {
           searchTerm: searchQuery
         }
       });
+
       return allMovies;
     } catch (error) {
       console.log(error);
@@ -26,6 +42,7 @@ class MovieService {
   async fetchSingleMovie(id) {
     try {
       const { data } = await apiService.getApiClient().get(ENDPOINTS.MOVIE(id));
+
       return data;
     } catch (error) {
       console.log(error);
