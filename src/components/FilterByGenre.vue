@@ -14,9 +14,7 @@
           <div class="form-inline col-md-3">
             <label for="genre">Filter by genre:</label>
             <select class="form-control ml-3" id="genre" style="width:50%">
-              <option selected>High</option>
-              <option>Medium</option>
-              <option>Low</option>
+              <option v-for="genre in genres" :value="genre.id" :key="genre.id">{{genre.name}}</option>
             </select>
           </div>
         </div>
@@ -26,29 +24,33 @@
 </template>
 
 <script>
-import { mapMutations, mapActions } from "vuex";
+import { mapMutations, mapActions, mapGetters } from "vuex";
 
 export default {
   name: "FilterByGenre",
 
-  data() {
-    return {
-      showBack: false
-    };
+  computed: {
+    ...mapGetters(["showCreateForm", "genres"]),
+    showBack() {
+      return this.showCreateForm;
+    }
   },
 
   methods: {
     ...mapMutations(["SHOW_CREATE_FORM"]),
 
+    ...mapActions(["getGenres"]),
+
     goBack() {
       this.SHOW_CREATE_FORM(false);
-      this.showBack = false;
     },
 
     showCreate() {
       this.SHOW_CREATE_FORM(true);
-      this.showBack = true;
     }
+  },
+  created() {
+    this.getGenres();
   }
 };
 </script>
