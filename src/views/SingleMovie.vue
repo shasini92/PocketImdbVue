@@ -15,13 +15,17 @@
           </button>
           <br />
           <br />
-          <button class="like" @click.prevent="handleReact('liked')" :disabled="disableLike">
+          <button
+            class="like"
+            @click.prevent="handleReact('liked')"
+            :disabled="singleMovie.disableLike"
+          >
             <i class="fa fa-thumbs-o-up" aria-hidden="true"></i>
           </button>
           <button
             class="dislike ml-4"
             @click.prevent="handleReact('disliked')"
-            :disabled="disableDislike"
+            :disabled="singleMovie.disableDislike"
           >
             <i class="fa fa-thumbs-o-down" aria-hidden="true"></i>
           </button>
@@ -62,10 +66,7 @@ export default {
   components: { PopularMovies },
 
   data() {
-    return {
-      disableLike: false,
-      disableDislike: false
-    };
+    return {};
   },
 
   computed: {
@@ -80,26 +81,24 @@ export default {
         reactionType,
         id: this.singleMovie.id
       };
+
       if (reactionType == "liked") {
-        this.disableLike = true;
-        this.disableDislike = false;
+        this.singleMovie.disableLike = true;
+        this.singleMovie.disableDislike = false;
       }
       if (reactionType == "disliked") {
-        this.disableLike = false;
-        this.disableDislike = true;
+        this.singleMovie.disableLike = false;
+        this.singleMovie.disableDislike = true;
       }
+
       this.react(data);
     }
   },
 
   created() {
     let id = this.$route.params.id;
+
     this.getSingleMovie(id);
-    console.log(this.singleMovie);
-    console.log(this.singleMovie.reaction_type);
-    if (this.singleMovie.reaction_type == "liked") this.disableLike = true;
-    if (this.singleMovie.reaction_type == "disliked")
-      this.disableDislike = true;
   }
 };
 </script>

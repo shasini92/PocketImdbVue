@@ -33,10 +33,10 @@ const actions = {
 
   async getSingleMovie({ commit, rootState }, id) {
     try {
-      console.log(rootState);
-      // const movie = await movieService.fetchSingleMovie(id);
+      const { user } = rootState;
+      const movie = await movieService.fetchSingleMovie(id);
 
-      // commit("SET_SINGLE_MOVIE", movie);
+      commit("SET_SINGLE_MOVIE", { movie, user_id: user.user.user_id });
     } catch (error) {
       console.log(error);
     }
@@ -58,7 +58,7 @@ const mutations = {
     state.movies = movies;
   },
 
-  SET_SINGLE_MOVIE: (state, movie) => {
+  SET_SINGLE_MOVIE: (state, { movie, user_id }) => {
     state.movie = movie;
     state.movie.dislikes = 0;
     state.movie.likes = 0;
@@ -66,6 +66,14 @@ const mutations = {
     state.movie.disableDislike = false;
 
     movie.reactions.forEach(reaction => {
+      if (reaction.reaction_type == "liked" && reaction.user_id == user_id) {
+        console.log("like disabled");
+        state.movie.disableLike = true;
+      }
+      if (reaction.reaction_type == "disliked" && reaction.user_id == user_id) {
+        state.movie.disableDislike = true;
+        console.log("dislike disabled");
+      }
       if (reaction.reaction_type == "disliked") state.movie.dislikes++;
       if (reaction.reaction_type == "liked") state.movie.likes++;
     });

@@ -8,7 +8,6 @@ const ENDPOINTS = {
 class MovieService {
   async react(reaction) {
     try {
-      console.log(reaction);
       const { data } = await apiService
         .getApiClient()
         .get(`${ENDPOINTS.MOVIE(reaction.id)}/react`, {
@@ -16,6 +15,7 @@ class MovieService {
             reactionType: reaction.reactionType
           }
         });
+
       return data;
     } catch (error) {
       console.log(error);
@@ -31,6 +31,7 @@ class MovieService {
           searchTerm: searchQuery
         }
       });
+
       return allMovies;
     } catch (error) {
       console.log(error);
@@ -40,7 +41,7 @@ class MovieService {
   async fetchSingleMovie(id) {
     try {
       const { data } = await apiService.getApiClient().get(ENDPOINTS.MOVIE(id));
-      console.log(data);
+
       return data[0];
     } catch (error) {
       console.log(error);

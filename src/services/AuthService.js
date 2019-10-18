@@ -32,6 +32,7 @@ class AuthService {
       const { data } = await apiService
         .getApiClient()
         .post(ENDPOINTS.REGISTER, newUserData);
+
       return data;
     } catch (error) {
       console.log(error);
