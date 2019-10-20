@@ -90,7 +90,7 @@ const mutations = {
     state.genres = genres;
   },
 
-  SET_SINGLE_MOVIE: (state, movie) => {
+  SET_SINGLE_MOVIE: (state, { movie, user_id }) => {
     state.movie = movie;
     state.movie.dislikes = 0;
     state.movie.likes = 0;
