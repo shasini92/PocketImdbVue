@@ -24,17 +24,16 @@ class MovieService {
     }
   }
 
-  async fetchMovies(searchQuery) {
+  async fetchMovies(page, searchQuery) {
     try {
-      const {
-        data: { data: allMovies }
-      } = await apiService.getApiClient().get(ENDPOINTS.MOVIES, {
+      const { data } = await apiService.getApiClient().get(ENDPOINTS.MOVIES, {
         params: {
+          page: page,
           searchTerm: searchQuery
         }
       });
 
-      return allMovies;
+      return data;
     } catch (error) {
       console.log(error);
     }
@@ -62,11 +61,11 @@ class MovieService {
 
   async fetchMoviesByGenre(genreId) {
     try {
-      const {
-        data: { data: allMovies }
-      } = await apiService.getApiClient().get(ENDPOINTS.MOVIESBYGENRE(genreId));
+      const { data } = await apiService
+        .getApiClient()
+        .get(ENDPOINTS.MOVIESBYGENRE(genreId));
 
-      return allMovies;
+      return data;
     } catch (error) {
       console.log(error);
     }
