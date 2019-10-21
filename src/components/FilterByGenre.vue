@@ -17,8 +17,9 @@
               class="form-control ml-3"
               id="genre"
               style="width:50%"
-              @change="onChange($event)"
+              @change="onChange({genreId:$event.target.value})"
             >
+              <option value selected>All Genres</option>
               <option v-for="genre in genres" :value="genre.id" :key="genre.id">{{genre.name}}</option>
             </select>
           </div>
@@ -44,7 +45,7 @@ export default {
   methods: {
     ...mapMutations(["SHOW_CREATE_FORM"]),
 
-    ...mapActions(["getGenres", "getMoviesByGenre"]),
+    ...mapActions(["getGenres", "getAllMovies"]),
 
     goBack() {
       this.SHOW_CREATE_FORM(false);
@@ -54,9 +55,8 @@ export default {
       this.SHOW_CREATE_FORM(true);
     },
 
-    onChange(event) {
-      let genreId = event.target.value;
-      this.getMoviesByGenre(genreId);
+    onChange(data) {
+      this.getAllMovies(data);
     }
   },
   created() {
