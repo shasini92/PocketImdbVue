@@ -52,9 +52,43 @@
             <div class="card-header">Comments</div>
             <div class="card-horizontal">
               <div class="card-body">
-                <p
-                  class="card-text"
-                >Lorem, ipsum dolor sit amet consectetur adipisicing elit. Exercitationem eveniet sit excepturi deleniti laudantium blanditiis ullam? Inventore, aperiam rem! Facilis mollitia ipsum consequuntur laboriosam, quos cum sunt! Dolorum voluptas amet voluptatum quod, soluta numquam, voluptatibus ut exercitationem tempora vero voluptate.</p>
+                <div v-for="comment in comments.data" :key="comment.id">
+                  <div class="card mb-2">
+                    <div class="card-body">
+                      <p class="card-text">{{comment.comment_body}}</p>
+                    </div>
+                    <div class="card-footer small">{{comment.created_at}}</div>
+                  </div>
+                </div>
+                <button
+                  v-if="moreCommentsAvailable"
+                  class="btn btn-info btn-block"
+                  @click.prevent="loadMoreComments"
+                >Load more comments</button>
+                <div class="card mt-3">
+                  <div class="card-body">
+                    <form @submit.prevent="addComment">
+                      <p class="mt-0">Leave a comment:</p>
+                      <div class="form-group mt-3">
+                        <div class="input-group input-group-alternative">
+                          <textarea
+                            rows="4"
+                            class="form-control"
+                            v-model="commentBody"
+                            placeholder="Enter your comment here.."
+                          ></textarea>
+                        </div>
+                      </div>
+                      <div>
+                        <button
+                          :disabled="isDisabled"
+                          type="submit"
+                          class="btn btn-primary btn-round btn-block"
+                        >Submit</button>
+                      </div>
+                    </form>
+                  </div>
+                </div>
               </div>
             </div>
           </div>
@@ -68,6 +102,7 @@
 <script>
 import PopularMovies from "../components/PopularMovies";
 import { mapGetters, mapActions } from "vuex";
+import { movieService } from "../services/MovieService";
 import {
   MOVIE_REACTION_DISLIKED,
   MOVIE_REACTION_LIKED
@@ -76,8 +111,25 @@ import {
 export default {
   components: { PopularMovies },
 
+  data() {
+    return {
+      comments: [],
+      moreCommentsAvailable: false,
+      commentBody: "",
+      id: this.$route.params.id
+    };
+  },
+
   computed: {
-    ...mapGetters(["singleMovie"])
+    ...mapGetters(["singleMovie"]),
+
+    isDisabled: function() {
+      if (this.commentBody) {
+        return false;
+      } else {
+        return true;
+      }
+    }
   },
 
   methods: {
@@ -99,13 +151,39 @@ export default {
       }
 
       this.react(data);
+    },
+
+    async getComments(id) {
+      this.comments = await movieService.fetchComments(id);
+      this.checkMoreComments();
+    },
+
+    async loadMoreComments() {
+      this.comments.current_page++;
+      let nextPage = this.comments.current_page;
+      const { data } = await movieService.fetchComments(this.id, nextPage);
+      this.comments.data.push(...data);
+      this.checkMoreComments();
+    },
+
+    checkMoreComments() {
+      if (this.comments.current_page < this.comments.last_page) {
+        this.moreCommentsAvailable = true;
+      } else {
+        this.moreCommentsAvailable = false;
+      }
+    },
+
+    async addComment() {
+      const comment = await movieService.addComment(this.id, this.commentBody);
+      this.comments.data.push(comment);
+      this.commentBody = "";
     }
   },
 
   created() {
-    let id = this.$route.params.id;
-
-    this.getSingleMovie(id);
+    this.getSingleMovie(this.id);
+    this.getComments(this.id);
   }
 };
 </script>
