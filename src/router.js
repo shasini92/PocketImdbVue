@@ -9,33 +9,54 @@ import Register from "./views/Register";
 
 Vue.use(Router);
 
+function loggedInGuard(to, from, next) {
+  if (!localStorage.getItem("access_token")) {
+    next({ name: "login" });
+  } else {
+    next();
+  }
+}
+
+function loggedOutGuard(to, from, next) {
+  if (localStorage.getItem("access_token")) {
+    next({ name: "home" });
+  } else {
+    next();
+  }
+}
+
 const router = new Router({
   mode: "history",
   routes: [
     {
       path: "/",
       name: "home",
-      component: Home
+      component: Home,
+      beforeEnter: loggedInGuard
     },
     {
       path: "/movies/:id",
       name: "movie",
-      component: SingleMovie
+      component: SingleMovie,
+      beforeEnter: loggedInGuard
     },
 
     {
       path: "/login",
       name: "login",
-      component: Login
+      component: Login,
+      beforeEnter: loggedOutGuard
     },
     {
       path: "*",
-      component: PageNotFound
+      component: PageNotFound,
+      beforeEnter: loggedInGuard
     },
     {
       path: "/register",
       name: "register",
-      component: Register
+      component: Register,
+      beforeEnter: loggedOutGuard
     }
   ]
 });

@@ -19,7 +19,7 @@
         </li>
       </ul>
       <ul class="navbar-nav ml-auto">
-        <form class="form-inline my-2 my-lg-0 mr-2">
+        <form class="form-inline my-2 my-lg-0 mr-2" v-if="userLoggedIn">
           <input
             class="form-control mr-sm-2"
             type="search"
@@ -43,7 +43,6 @@
 </template>
 
 <script>
-import axios from "axios";
 import { mapActions, mapGetters, mapMutations } from "vuex";
 
 const debounce = (func, delay) => {
@@ -80,7 +79,6 @@ export default {
 
     onLogout() {
       this.logout();
-      this.$router.push({ name: "login" });
     },
 
     ...mapMutations(["SET_USER_LOGGED_IN"])
