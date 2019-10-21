@@ -3,9 +3,16 @@
     <div class="col-sm-9 mt-2 px-0">
       <div class="card">
         <div class="card-body">
-          <h3>{{singleMovie.title}}</h3>
+          <div class="row">
+            <div class="col-md-6">
+              <h3>{{singleMovie.title}}</h3>
+            </div>
+            <div class="col-md-6">
+              <p class="float-right">Visits: {{singleMovie.visits}}</p>
+            </div>
+          </div>
           <br />
-          <h4>Genre</h4>
+          <h4>Genre: {{singleMovie.genre.name}}</h4>
           <br />
           <button class="btn-outline-success">
             <span class="badge badge-pill badge-success">{{singleMovie.likes}}</span>

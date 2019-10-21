@@ -7,7 +7,7 @@
             <div class="card-header py-0">
               <div class="my-1">
                 <p class="float-left my-1">{{movie.title}}</p>
-                <p class="float-right my-1">Rating 4.5</p>
+                <p class="float-right my-1">Visits: {{movie.visits}}</p>
               </div>
             </div>
             <div class="card-horizontal">
