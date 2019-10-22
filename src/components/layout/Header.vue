@@ -70,7 +70,11 @@ export default {
 
   watch: {
     searchTerm() {
-      this.getAllMovies(this.searchTerm);
+      let data = {
+        page: 1,
+        searchQuery: this.searchTerm
+      };
+      this.getAllMovies(data);
     }
   },
 

@@ -2,7 +2,7 @@
   <div class="col-sm-9 mt-2 px-0">
     <div class="card mr-auto">
       <div class="card-body">
-        <div v-for="movie in allMovies" :key="movie.id">
+        <div v-for="movie in allMovies.data" :key="movie.id">
           <div class="card my-2 hoverable" @click="handleRouting(movie.id)">
             <div class="card-header py-0">
               <div class="my-1">
@@ -20,6 +20,9 @@
             </div>
           </div>
         </div>
+      </div>
+      <div class="card-footer">
+        <pagination :data="allMovies" @pagination-change-page="getAllMovies({page:$event})"></pagination>
       </div>
     </div>
   </div>
@@ -44,7 +47,11 @@ export default {
   },
 
   created() {
-    this.getAllMovies();
+    let data = {
+      page: 1,
+      searchQuery: ""
+    };
+    this.getAllMovies(data);
   }
 };
 </script>

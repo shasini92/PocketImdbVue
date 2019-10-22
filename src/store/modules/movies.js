@@ -5,7 +5,7 @@ import {
 } from "../../constants/reactions";
 
 const state = {
-  movies: [],
+  movies: {},
   movie: {},
   showCreateForm: false,
   genres: []
@@ -29,11 +29,11 @@ const actions = {
     }
   },
 
-  async getAllMovies({ commit }, searchQuery) {
+  async getAllMovies({ commit }, fetchData) {
     try {
-      const allMovies = await movieService.fetchMovies(searchQuery);
+      const data = await movieService.fetchMovies(fetchData);
 
-      commit("SET_MOVIES", allMovies);
+      commit("SET_MOVIES", data);
     } catch (error) {
       console.log(error);
     }
@@ -62,9 +62,9 @@ const actions = {
 
   async getMoviesByGenre({ commit }, genreId) {
     try {
-      const allMovies = await movieService.fetchMoviesByGenre(genreId);
+      const data = await movieService.fetchMoviesByGenre(genreId);
 
-      commit("SET_MOVIES", allMovies);
+      commit("SET_MOVIES", data);
     } catch (error) {
       console.log(error);
     }

@@ -24,17 +24,17 @@ class MovieService {
     }
   }
 
-  async fetchMovies(searchQuery) {
+  async fetchMovies(fetchData) {
     try {
-      const {
-        data: { data: allMovies }
-      } = await apiService.getApiClient().get(ENDPOINTS.MOVIES, {
+      const { data } = await apiService.getApiClient().get(ENDPOINTS.MOVIES, {
         params: {
-          searchTerm: searchQuery
+          page: fetchData.page,
+          searchTerm: fetchData.searchQuery,
+          genreId: fetchData.genreId
         }
       });
 
-      return allMovies;
+      return data;
     } catch (error) {
       console.log(error);
     }
@@ -55,18 +55,6 @@ class MovieService {
       const { data } = await apiService.getApiClient().get(ENDPOINTS.GENRES);
 
       return data;
-    } catch (error) {
-      console.log(error);
-    }
-  }
-
-  async fetchMoviesByGenre(genreId) {
-    try {
-      const {
-        data: { data: allMovies }
-      } = await apiService.getApiClient().get(ENDPOINTS.MOVIESBYGENRE(genreId));
-
-      return allMovies;
     } catch (error) {
       console.log(error);
     }
