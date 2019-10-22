@@ -15,8 +15,7 @@ class MovieService {
       const { data } = await apiService
         .getApiClient()
         .post(ENDPOINTS.REACTIONS(reaction.id), {
-          reactionType: reaction.reactionType,
-          movieId: reaction.id
+          reactionType: reaction.reactionType
         });
 
       return data;
@@ -31,7 +30,8 @@ class MovieService {
         params: {
           page: fetchData.page,
           searchTerm: fetchData.searchQuery,
-          genreId: fetchData.genreId
+          genreId: fetchData.genreId,
+          popular: fetchData.popular
         }
       });
 
