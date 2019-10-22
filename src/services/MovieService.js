@@ -5,7 +5,7 @@ const ENDPOINTS = {
   MOVIE: id => `/movies/${id}`,
   GENRES: "/genres",
   REACTIONS: id => `/movies/${id}/reactions`,
-  MOVIESBYGENRE: genreId => `/movies?genreId=${genreId}`
+  COMMENTS: id => `/movies/${id}/comments`
 };
 
 class MovieService {
@@ -65,6 +65,36 @@ class MovieService {
       const { data } = await apiService
         .getApiClient()
         .post(ENDPOINTS.MOVIES, newMovie);
+
+      return data;
+    } catch (error) {
+      console.log(error);
+    }
+  }
+
+  async fetchComments(id, page) {
+    try {
+      const { data } = await apiService
+        .getApiClient()
+        .get(ENDPOINTS.COMMENTS(id), {
+          params: {
+            page: page
+          }
+        });
+
+      return data;
+    } catch (error) {
+      console.log(error);
+    }
+  }
+
+  async addComment(id, commentBody) {
+    try {
+      const { data } = await apiService
+        .getApiClient()
+        .post(ENDPOINTS.COMMENTS(id), {
+          commentBody
+        });
 
       return data;
     } catch (error) {
