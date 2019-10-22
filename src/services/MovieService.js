@@ -5,7 +5,8 @@ const ENDPOINTS = {
   MOVIE: id => `/movies/${id}`,
   GENRES: "/genres",
   REACTIONS: id => `/movies/${id}/reactions`,
-  COMMENTS: id => `/movies/${id}/comments`
+  COMMENTS: id => `/movies/${id}/comments`,
+  WATCHLIST: id => `/watchlist/${id}`
 };
 
 class MovieService {
@@ -33,6 +34,54 @@ class MovieService {
           genreId: fetchData.genreId
         }
       });
+
+      return data;
+    } catch (error) {
+      console.log(error);
+    }
+  }
+
+  async fetchWatchlistMovies() {
+    try {
+      const { data } = await apiService
+        .getApiClient()
+        .get(ENDPOINTS.WATCHLIST("/"));
+
+      return data;
+    } catch (error) {
+      console.log(error);
+    }
+  }
+
+  async addToWatchlist(id) {
+    try {
+      const { data } = await apiService
+        .getApiClient()
+        .post(ENDPOINTS.WATCHLIST("/"), { id });
+
+      return data;
+    } catch (error) {
+      console.log(error);
+    }
+  }
+
+  async markAsWatched(id) {
+    try {
+      const { data } = await apiService
+        .getApiClient()
+        .put(ENDPOINTS.WATCHLIST(id));
+
+      return data;
+    } catch (error) {
+      console.log(error);
+    }
+  }
+
+  async removeFromWatchlist(id) {
+    try {
+      const { data } = await apiService
+        .getApiClient()
+        .delete(ENDPOINTS.WATCHLIST(id));
 
       return data;
     } catch (error) {

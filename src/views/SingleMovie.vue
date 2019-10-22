@@ -46,6 +46,12 @@
                 <p class="card-text">{{singleMovie.description}}</p>
               </div>
             </div>
+            <div class="card-footer">
+              <button
+                class="btn btn-primary btn-sm float-right"
+                @click.prevent.stop="addToWatchlist(singleMovie.id)"
+              >Add to watchlist</button>
+            </div>
           </div>
           <br />
           <div class="card my-2">
@@ -133,7 +139,7 @@ export default {
   },
 
   methods: {
-    ...mapActions(["getSingleMovie", "react"]),
+    ...mapActions(["getSingleMovie", "react", "addToWatchlist"]),
 
     handleReact(reactionType) {
       let data = {

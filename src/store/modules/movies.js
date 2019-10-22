@@ -8,14 +8,18 @@ const state = {
   movies: {},
   movie: {},
   showCreateForm: false,
-  genres: []
+  showWatchlist: false,
+  genres: [],
+  watchlist: {}
 };
 
 const getters = {
   allMovies: state => state.movies,
   singleMovie: state => state.movie,
   showCreateForm: state => state.showCreateForm,
-  genres: state => state.genres
+  showWatchlist: state => state.showWatchlist,
+  genres: state => state.genres,
+  watchlist: state => state.watchlist
 };
 
 const actions = {
@@ -34,6 +38,44 @@ const actions = {
       const data = await movieService.fetchMovies(fetchData);
 
       commit("SET_MOVIES", data);
+    } catch (error) {
+      console.log(error);
+    }
+  },
+
+  async getWatchlist({ commit }, fetchData) {
+    try {
+      const data = await movieService.fetchWatchlistMovies(fetchData);
+
+      commit("SET_WATCHLIST", data);
+    } catch (error) {
+      console.log(error);
+    }
+  },
+
+  async addToWatchlist({ commit }, id) {
+    try {
+      await movieService.addToWatchlist(id);
+    } catch (error) {
+      console.log(error);
+    }
+  },
+
+  async markAsWatched({ commit }, id) {
+    try {
+      await movieService.markAsWatched(id);
+
+      commit("SET_AS_WATCHED", id);
+    } catch (error) {
+      console.log(error);
+    }
+  },
+
+  async removeFromWatchlist({ commit }, id) {
+    try {
+      await movieService.removeFromWatchlist(id);
+
+      commit("REMOVE_FROM_WATCHLIST", id);
     } catch (error) {
       console.log(error);
     }
@@ -84,6 +126,10 @@ const actions = {
 const mutations = {
   SET_MOVIES: (state, movies) => {
     state.movies = movies;
+  },
+
+  SET_WATCHLIST: (state, movies) => {
+    state.watchlist = movies;
   },
 
   SET_GENRES: (state, genres) => {
@@ -137,6 +183,24 @@ const mutations = {
       if (newState.likes !== 0) newState.likes--;
       state.movie = newState;
     }
+  },
+
+  SHOW_WATCHLIST: (state, data) => {
+    state.showWatchlist = data;
+  },
+
+  SET_AS_WATCHED: (state, id) => {
+    state.watchlist.map(movie => {
+      if (movie.id == id) {
+        movie.pivot.watched = 1;
+        return movie;
+      }
+      return movie;
+    });
+  },
+
+  REMOVE_FROM_WATCHLIST: (state, id) => {
+    state.watchlist = state.watchlist.filter(movie => movie.id != id);
   }
 };
 
