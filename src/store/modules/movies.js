@@ -10,7 +10,7 @@ const state = {
   showCreateForm: false,
   showWatchlist: false,
   genres: [],
-  watchlist: {}
+  watchlist: []
 };
 
 const getters = {
@@ -33,8 +33,10 @@ const actions = {
     }
   },
 
-  async getAllMovies({ commit }, fetchData) {
+  async getAllMovies({ commit, dispatch }, fetchData) {
     try {
+      await dispatch("getWatchlist");
+
       const data = await movieService.fetchMovies(fetchData);
 
       commit("SET_MOVIES", data);
@@ -81,8 +83,10 @@ const actions = {
     }
   },
 
-  async getSingleMovie({ commit, rootState }, id) {
+  async getSingleMovie({ commit, rootState, dispatch }, id) {
     try {
+      await dispatch("getWatchlist");
+
       const { user } = rootState;
       const movie = await movieService.fetchSingleMovie(id);
 
@@ -125,6 +129,15 @@ const actions = {
 
 const mutations = {
   SET_MOVIES: (state, movies) => {
+    const watchedIDs = state.watchlist.map(movie => movie.id);
+    movies.data.forEach(movie => {
+      if (watchedIDs.includes(movie.id)) {
+        let watchedMovie = state.watchlist.find(
+          element => element.id == movie.id
+        );
+        movie.watched = watchedMovie.pivot.watched;
+      }
+    });
     state.movies = movies;
   },
 
@@ -160,6 +173,14 @@ const mutations = {
         state.movie.dislikes++;
       if (reaction.reaction_type == MOVIE_REACTION_LIKED) state.movie.likes++;
     });
+
+    const watchedIDs = state.watchlist.map(movie => movie.id);
+    if (watchedIDs.includes(movie.id)) {
+      let watchedMovie = state.watchlist.find(
+        element => element.id == movie.id
+      );
+      movie.watched = watchedMovie.pivot.watched;
+    }
   },
 
   NEW_MOVIE: (state, movie) => {

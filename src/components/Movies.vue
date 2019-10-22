@@ -3,11 +3,20 @@
     <div class="card mr-auto">
       <div class="card-body">
         <div v-for="movie in allMovies.data" :key="movie.id">
-          <div class="card my-2 hoverable" @click="handleRouting(movie.id)">
+          <div class="card my-3 hoverable" @click="handleRouting(movie.id)">
             <div class="card-header py-0">
               <div class="my-1">
                 <p class="float-left my-1">{{movie.title}}</p>
-                <p class="float-right my-1">Visits: {{movie.visits}}</p>
+                <button type="button" class="btn btn-sm btn-info float-right my-1">
+                  Visits
+                  <span class="badge badge-light">{{movie.visits}}</span>
+                </button>
+                <h5>
+                  <span
+                    v-if="movie.watched"
+                    class="btn btn-success btn-sm float-right my-1 mr-2"
+                  >Watched!</span>
+                </h5>
               </div>
             </div>
             <div class="card-horizontal">
@@ -20,7 +29,7 @@
             </div>
             <div class="card-footer">
               <button
-                class="btn btn-primary btn-sm float-right my-1"
+                class="btn btn-primary btn-sm float-right"
                 @click.prevent.stop="addToWatchlist(movie.id)"
               >Add to watchlist</button>
             </div>

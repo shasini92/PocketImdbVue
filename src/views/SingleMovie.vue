@@ -12,7 +12,7 @@
             </div>
           </div>
           <br />
-          <h4>Genre: {{singleMovie.genre.name}}</h4>
+          <h4>Genre: {{singleMovie.genre && singleMovie.genre.name}}</h4>
           <br />
           <button class="btn-outline-success">
             <span class="badge badge-pill badge-success">{{singleMovie.likes}}</span>
@@ -51,6 +51,12 @@
                 class="btn btn-primary btn-sm float-right"
                 @click.prevent.stop="addToWatchlist(singleMovie.id)"
               >Add to watchlist</button>
+              <h5>
+                <span
+                  v-if="singleMovie.watched"
+                  class="btn btn-success btn-sm float-right mr-2"
+                >Watched!</span>
+              </h5>
             </div>
           </div>
           <br />
