@@ -8,7 +8,10 @@
               <h3>{{singleMovie.title}}</h3>
             </div>
             <div class="col-md-6">
-              <p class="float-right">Visits: {{singleMovie.visits}}</p>
+              <button type="button" class="btn btn-sm btn-info float-right my-1">
+                Visits
+                <span class="badge badge-light">{{singleMovie.visits}}</span>
+              </button>
             </div>
           </div>
           <br />

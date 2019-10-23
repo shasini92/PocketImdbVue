@@ -157,8 +157,6 @@ const mutations = {
 
   SET_SINGLE_MOVIE: (state, { movie, user_id }) => {
     state.movie = movie;
-    state.movie.dislikes = 0;
-    state.movie.likes = 0;
     state.movie.disableLike = false;
     state.movie.disableDislike = false;
 
@@ -175,9 +173,6 @@ const mutations = {
       ) {
         state.movie.disableDislike = true;
       }
-      if (reaction.reaction_type == MOVIE_REACTION_DISLIKED)
-        state.movie.dislikes++;
-      if (reaction.reaction_type == MOVIE_REACTION_LIKED) state.movie.likes++;
     });
 
     const watchedIDs = state.watchlist.map(movie => movie.id);
@@ -197,13 +192,14 @@ const mutations = {
     if (type == MOVIE_REACTION_LIKED) {
       const newState = { ...state.movie };
       newState.likes++;
-      if (newState.dislikes !== 0) newState.dislikes--;
+      if (newState.dislikes !== 0 && newState.disableDislike)
+        newState.dislikes--;
       state.movie = newState;
     }
     if (type == MOVIE_REACTION_DISLIKED) {
       const newState = { ...state.movie };
       newState.dislikes++;
-      if (newState.likes !== 0) newState.likes--;
+      if (newState.likes !== 0 && newState.disableLike) newState.likes--;
       state.movie = newState;
     }
   },
