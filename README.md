@@ -1,4 +1,4 @@
-# pocketimdb
+# PocketImdb application using Laravel for the backend and Vue for the front, with full CRUD functionality and more.
 
 ## Project setup
 ```
@@ -15,15 +15,13 @@ npm run serve
 npm run build
 ```
 
-### Run your tests
+### To test out the application use the following data:
 ```
-npm run test
-```
-
-### Lints and fixes files
-```
-npm run lint
+email: test@test.com
+password: testtest
 ```
 
-### Customize configuration
-See [Configuration Reference](https://cli.vuejs.org/config/).
+### Make sure to download and follow the instructions for the server part from: 
+```
+https://github.com/shasini92/PocketImdbLaravel
+```
