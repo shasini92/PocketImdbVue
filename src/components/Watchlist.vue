@@ -2,19 +2,17 @@
   <div class="col-sm-9 mt-2 px-0">
     <div class="card mr-auto">
       <div class="card-body">
-        <div v-for="movie in allMovies.data" :key="movie.id">
-          <div class="card my-3 hoverable" @click="handleRouting(movie.id)">
+        <h1>Watchlist</h1>
+        <h4 class="mt-4" v-if="!moviesInWatchlist">You don't have movies in your watchlist.</h4>
+        <div v-for="movie in watchlist" :key="movie.id">
+          <div class="card my-2 hoverable" @click="handleRouting(movie.id)">
             <div class="card-header py-0">
               <div class="my-1">
                 <p class="float-left my-1">{{movie.title}}</p>
-                <button type="button" class="btn btn-sm btn-info float-right my-1">
-                  Visits
-                  <span class="badge badge-light">{{movie.visits}}</span>
-                </button>
                 <h5>
                   <span
-                    v-if="movie.watched"
-                    class="btn btn-success btn-sm float-right my-1 mr-2"
+                    v-if="movie.pivot.watched"
+                    class="btn btn-success btn-sm float-right my-1"
                   >Watched!</span>
                 </h5>
               </div>
@@ -29,32 +27,39 @@
             </div>
             <div class="card-footer">
               <button
-                class="btn btn-primary btn-sm float-right"
-                @click.prevent.stop="addToWatchlist(movie.id)"
-              >Add to watchlist</button>
+                class="btn btn-danger btn-sm float-right ml-auto"
+                @click.prevent.stop="removeFromWatchlist(movie.id)"
+              >Remove</button>
+              <button
+                v-if="!movie.pivot.watched"
+                class="btn btn-primary btn-sm float-right mr-2"
+                @click.prevent.stop="markAsWatched(movie.id)"
+              >Mark as watched</button>
             </div>
           </div>
         </div>
-      </div>
-      <div class="card-footer">
-        <pagination :data="allMovies" @pagination-change-page="getAllMovies({page:$event})"></pagination>
       </div>
     </div>
   </div>
 </template>
 
 <script>
-import { mapGetters, mapActions } from "vuex";
+import { mapActions, mapMutations, mapGetters } from "vuex";
+import { omdbService } from "../services/OMDbService";
 
 export default {
-  name: "Movies",
+  name: "Watchlist",
 
   computed: {
-    ...mapGetters(["allMovies"])
+    ...mapGetters(["watchlist"]),
+
+    moviesInWatchlist() {
+      return this.watchlist.length >= 1;
+    }
   },
 
   methods: {
-    ...mapActions(["getAllMovies", "addToWatchlist"]),
+    ...mapActions(["getWatchlist", "markAsWatched", "removeFromWatchlist"]),
 
     handleRouting(id) {
       this.$router.push({ name: "movie", params: { id } });
@@ -62,11 +67,7 @@ export default {
   },
 
   created() {
-    let data = {
-      page: 1,
-      searchQuery: ""
-    };
-    this.getAllMovies(data);
+    this.getWatchlist();
   }
 };
 </script>

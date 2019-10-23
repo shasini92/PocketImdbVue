@@ -11,6 +11,13 @@
             >Add a new Movie</button>
             <button v-if="showBack" class="btn btn-info" @click.prevent="goBack">Go Back</button>
           </div>
+          <div class="col-md-2">
+            <button
+              v-if="!showBack"
+              class="btn btn-success"
+              @click.prevent="showWatchlistCard"
+            >Watchlist</button>
+          </div>
           <div class="form-inline col-md-3">
             <label for="genre">Filter by genre:</label>
             <select
@@ -36,23 +43,31 @@ export default {
   name: "FilterByGenre",
 
   computed: {
-    ...mapGetters(["showCreateForm", "genres"]),
+    ...mapGetters(["showCreateForm", "genres", "showWatchlist"]),
+
     showBack() {
-      return this.showCreateForm;
+      return this.showCreateForm || this.showWatchlist;
     }
   },
 
   methods: {
-    ...mapMutations(["SHOW_CREATE_FORM"]),
+    ...mapMutations(["SHOW_CREATE_FORM", "SHOW_WATCHLIST"]),
 
     ...mapActions(["getGenres", "getAllMovies"]),
 
     goBack() {
       this.SHOW_CREATE_FORM(false);
+      this.SHOW_WATCHLIST(false);
     },
 
     showCreate() {
       this.SHOW_CREATE_FORM(true);
+      this.SHOW_WATCHLIST(false);
+    },
+
+    showWatchlistCard() {
+      this.SHOW_WATCHLIST(true);
+      this.SHOW_CREATE_FORM(false);
     },
 
     onChange(data) {

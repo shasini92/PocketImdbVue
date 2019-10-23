@@ -8,14 +8,18 @@ const state = {
   movies: {},
   movie: {},
   showCreateForm: false,
-  genres: []
+  showWatchlist: false,
+  genres: [],
+  watchlist: []
 };
 
 const getters = {
   allMovies: state => state.movies,
   singleMovie: state => state.movie,
   showCreateForm: state => state.showCreateForm,
-  genres: state => state.genres
+  showWatchlist: state => state.showWatchlist,
+  genres: state => state.genres,
+  watchlist: state => state.watchlist
 };
 
 const actions = {
@@ -29,8 +33,10 @@ const actions = {
     }
   },
 
-  async getAllMovies({ commit }, fetchData) {
+  async getAllMovies({ commit, dispatch }, fetchData) {
     try {
+      await dispatch("getWatchlist");
+
       const data = await movieService.fetchMovies(fetchData);
 
       commit("SET_MOVIES", data);
@@ -39,8 +45,48 @@ const actions = {
     }
   },
 
-  async getSingleMovie({ commit, rootState }, id) {
+  async getWatchlist({ commit }, fetchData) {
     try {
+      const data = await movieService.fetchWatchlistMovies(fetchData);
+
+      commit("SET_WATCHLIST", data);
+    } catch (error) {
+      console.log(error);
+    }
+  },
+
+  async addToWatchlist({ commit }, id) {
+    try {
+      await movieService.addToWatchlist(id);
+    } catch (error) {
+      console.log(error);
+    }
+  },
+
+  async markAsWatched({ commit }, id) {
+    try {
+      await movieService.markAsWatched(id);
+
+      commit("SET_AS_WATCHED", id);
+    } catch (error) {
+      console.log(error);
+    }
+  },
+
+  async removeFromWatchlist({ commit }, id) {
+    try {
+      await movieService.removeFromWatchlist(id);
+
+      commit("REMOVE_FROM_WATCHLIST", id);
+    } catch (error) {
+      console.log(error);
+    }
+  },
+
+  async getSingleMovie({ commit, rootState, dispatch }, id) {
+    try {
+      await dispatch("getWatchlist");
+
       const { user } = rootState;
       const movie = await movieService.fetchSingleMovie(id);
 
@@ -83,7 +129,20 @@ const actions = {
 
 const mutations = {
   SET_MOVIES: (state, movies) => {
+    const watchedIDs = state.watchlist.map(movie => movie.id);
+    movies.data.forEach(movie => {
+      if (watchedIDs.includes(movie.id)) {
+        let watchedMovie = state.watchlist.find(
+          element => element.id == movie.id
+        );
+        movie.watched = watchedMovie.pivot.watched;
+      }
+    });
     state.movies = movies;
+  },
+
+  SET_WATCHLIST: (state, movies) => {
+    state.watchlist = movies;
   },
 
   SET_GENRES: (state, genres) => {
@@ -114,6 +173,14 @@ const mutations = {
         state.movie.dislikes++;
       if (reaction.reaction_type == MOVIE_REACTION_LIKED) state.movie.likes++;
     });
+
+    const watchedIDs = state.watchlist.map(movie => movie.id);
+    if (watchedIDs.includes(movie.id)) {
+      let watchedMovie = state.watchlist.find(
+        element => element.id == movie.id
+      );
+      movie.watched = watchedMovie.pivot.watched;
+    }
   },
 
   NEW_MOVIE: (state, movie) => {
@@ -137,6 +204,24 @@ const mutations = {
       if (newState.likes !== 0) newState.likes--;
       state.movie = newState;
     }
+  },
+
+  SHOW_WATCHLIST: (state, data) => {
+    state.showWatchlist = data;
+  },
+
+  SET_AS_WATCHED: (state, id) => {
+    state.watchlist.map(movie => {
+      if (movie.id == id) {
+        movie.pivot.watched = 1;
+        return movie;
+      }
+      return movie;
+    });
+  },
+
+  REMOVE_FROM_WATCHLIST: (state, id) => {
+    state.watchlist = state.watchlist.filter(movie => movie.id != id);
   }
 };
 
