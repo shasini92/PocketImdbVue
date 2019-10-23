@@ -7,6 +7,7 @@ import {
 const state = {
   movies: {},
   movie: {},
+  popularMovies: {},
   showCreateForm: false,
   showWatchlist: false,
   genres: [],
@@ -16,6 +17,7 @@ const state = {
 const getters = {
   allMovies: state => state.movies,
   singleMovie: state => state.movie,
+  popularMovies: state => state.popularMovies,
   showCreateForm: state => state.showCreateForm,
   showWatchlist: state => state.showWatchlist,
   genres: state => state.genres,
@@ -40,6 +42,18 @@ const actions = {
       const data = await movieService.fetchMovies(fetchData);
 
       commit("SET_MOVIES", data);
+    } catch (error) {
+      console.log(error);
+    }
+  },
+
+  async getPopularMovies({ commit, dispatch }, fetchData) {
+    try {
+      await dispatch("getWatchlist");
+
+      const movies = await movieService.fetchMovies(fetchData);
+
+      commit("SET_POPULAR_MOVIES", movies);
     } catch (error) {
       console.log(error);
     }
@@ -147,6 +161,10 @@ const mutations = {
 
   SET_GENRES: (state, genres) => {
     state.genres = genres;
+  },
+
+  SET_POPULAR_MOVIES: (state, movies) => {
+    state.popularMovies = movies;
   },
 
   SET_SINGLE_MOVIE: (state, { movie, user_id }) => {

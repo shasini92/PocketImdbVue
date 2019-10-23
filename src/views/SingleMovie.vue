@@ -144,6 +144,12 @@ export default {
     }
   },
 
+  watch: {
+    $route(to, from) {
+      this.getSingleMovie(this.$route.params.id);
+    }
+  },
+
   methods: {
     ...mapActions(["getSingleMovie", "react", "addToWatchlist"]),
 
