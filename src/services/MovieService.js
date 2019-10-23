@@ -6,7 +6,8 @@ const ENDPOINTS = {
   GENRES: "/genres",
   REACTIONS: id => `/movies/${id}/reactions`,
   COMMENTS: id => `/movies/${id}/comments`,
-  WATCHLIST: id => `/watchlist/${id}`
+  WATCHLIST: "/watchlist",
+  WATCHLIST_MOVIE: id => `/movies/${id}/watchlist`
 };
 
 class MovieService {
@@ -43,9 +44,7 @@ class MovieService {
 
   async fetchWatchlistMovies() {
     try {
-      const { data } = await apiService
-        .getApiClient()
-        .get(ENDPOINTS.WATCHLIST("/"));
+      const { data } = await apiService.getApiClient().get(ENDPOINTS.WATCHLIST);
 
       return data;
     } catch (error) {
@@ -57,7 +56,7 @@ class MovieService {
     try {
       const { data } = await apiService
         .getApiClient()
-        .post(ENDPOINTS.WATCHLIST("/"), { id });
+        .post(ENDPOINTS.WATCHLIST, { id });
 
       return data;
     } catch (error) {
@@ -69,7 +68,7 @@ class MovieService {
     try {
       const { data } = await apiService
         .getApiClient()
-        .put(ENDPOINTS.WATCHLIST(id));
+        .put(ENDPOINTS.WATCHLIST_MOVIE(id));
 
       return data;
     } catch (error) {
@@ -81,7 +80,7 @@ class MovieService {
     try {
       const { data } = await apiService
         .getApiClient()
-        .delete(ENDPOINTS.WATCHLIST(id));
+        .delete(ENDPOINTS.WATCHLIST_MOVIE(id));
 
       return data;
     } catch (error) {

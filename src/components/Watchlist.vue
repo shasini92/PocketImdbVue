@@ -3,7 +3,7 @@
     <div class="card mr-auto">
       <div class="card-body">
         <h1>Watchlist</h1>
-        <h4 class="mt-4" v-if="watchlist.length<1">You don't have movies in your watchlist.</h4>
+        <h4 class="mt-4" v-if="!moviesInWatchlist">You don't have movies in your watchlist.</h4>
         <div v-for="movie in watchlist" :key="movie.id">
           <div class="card my-2 hoverable" @click="handleRouting(movie.id)">
             <div class="card-header py-0">
@@ -51,7 +51,12 @@ export default {
   name: "Watchlist",
 
   computed: {
-    ...mapGetters(["watchlist"])
+    ...mapGetters(["watchlist"]),
+
+    moviesInWatchlist() {
+      if (this.watchlist.length < 1) return false;
+      return true;
+    }
   },
 
   methods: {
