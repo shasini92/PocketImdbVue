@@ -107,12 +107,12 @@
         </div>
       </div>
     </div>
-    <PopularMovies />
+    <RelatedMovies />
   </div>
 </template>
 
 <script>
-import PopularMovies from "../components/PopularMovies";
+import RelatedMovies from "../components/RelatedMovies";
 import { mapGetters, mapActions } from "vuex";
 import { movieService } from "../services/MovieService";
 import {
@@ -121,7 +121,7 @@ import {
 } from "../constants/reactions";
 
 export default {
-  components: { PopularMovies },
+  components: { RelatedMovies },
 
   data() {
     return {
