@@ -54,8 +54,7 @@ export default {
     ...mapGetters(["watchlist"]),
 
     moviesInWatchlist() {
-      if (this.watchlist.length < 1) return false;
-      return true;
+      return this.watchlist.length >= 1;
     }
   },
 
