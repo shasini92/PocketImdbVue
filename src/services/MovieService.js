@@ -32,7 +32,7 @@ class MovieService {
           page: fetchData.page,
           searchTerm: fetchData.searchQuery,
           genreId: fetchData.genreId,
-          popular: fetchData.popular
+          sortBy: fetchData.sortBy
         }
       });
 

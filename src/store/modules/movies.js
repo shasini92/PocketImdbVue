@@ -123,8 +123,6 @@ const actions = {
   async addMovie({ commit }, data) {
     try {
       const newMovie = await movieService.addMovie(data);
-
-      commit("NEW_MOVIE", newMovie);
     } catch (error) {
       console.log(error);
     }
@@ -189,10 +187,6 @@ const mutations = {
       );
       movie.watched = watchedMovie.pivot.watched;
     }
-  },
-
-  NEW_MOVIE: (state, movie) => {
-    state.movies.unshift(movie);
   },
 
   SHOW_CREATE_FORM: (state, data) => {

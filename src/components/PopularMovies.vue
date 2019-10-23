@@ -32,7 +32,7 @@ export default {
 
   created() {
     let data = {
-      popular: true
+      sortBy: "likes"
     };
 
     this.getPopularMovies(data);
