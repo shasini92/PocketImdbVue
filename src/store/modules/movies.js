@@ -11,7 +11,8 @@ const state = {
   showCreateForm: false,
   showWatchlist: false,
   genres: [],
-  watchlist: []
+  watchlist: [],
+  searchTerm: ""
 };
 
 const getters = {
@@ -21,7 +22,8 @@ const getters = {
   showCreateForm: state => state.showCreateForm,
   showWatchlist: state => state.showWatchlist,
   genres: state => state.genres,
-  watchlist: state => state.watchlist
+  watchlist: state => state.watchlist,
+  searchTerm: state => state.searchTerm
 };
 
 const actions = {
@@ -38,6 +40,8 @@ const actions = {
   async getAllMovies({ commit, dispatch }, fetchData) {
     try {
       await dispatch("getWatchlist");
+
+      fetchData.searchQuery = state.searchTerm;
 
       const data = await movieService.fetchMovies(fetchData);
 
@@ -220,6 +224,10 @@ const mutations = {
 
   REMOVE_FROM_WATCHLIST: (state, id) => {
     state.watchlist = state.watchlist.filter(movie => movie.id != id);
+  },
+
+  SET_SEARCHTERM: (state, searchTerm) => {
+    state.searchTerm = searchTerm;
   }
 };
 
