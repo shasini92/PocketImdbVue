@@ -71,9 +71,11 @@ export default {
   watch: {
     searchTerm() {
       let data = {
-        page: 1,
-        searchQuery: this.searchTerm
+        page: 1
       };
+
+      this.SET_SEARCHTERM(this.searchTerm);
+
       this.getAllMovies(data);
     }
   },
@@ -85,7 +87,7 @@ export default {
       this.logout();
     },
 
-    ...mapMutations(["SET_USER_LOGGED_IN"])
+    ...mapMutations(["SET_USER_LOGGED_IN", "SET_SEARCHTERM"])
   },
 
   created() {
